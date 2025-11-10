@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Servicio de Base de Datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      # Puerto 3309 en tu máquina (HOST) -> 3306 en el contenedor
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: estudiantes_db
+    volumes:
+      # Persiste los datos de la BDD
+      - mysql-data:/var/lib/mysql
+      # Ejecuta tu script SQL al crear la BDD por primera vez
+      - ./init-sql:/docker-entrypoint-initdb.d
+    restart: always
+
+  # Servicio de la Aplicación Spring Boot (para DESARROLLO)
+  app:
+    # Construye usando el Dockerfile de desarrollo
+    build: .
+    container_name: spring-boot-app
+    ports:
+      # Puerto 8081 en tu máquina (HOST) -> 8080 en el contenedor
+      - "8081:8080"
+      # Puerto de depuración
+      - "5005:5005"
+    environment:
+      # Configuración de la BDD para la app DENTRO de Docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/estudiantes_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+    volumes:
+      # === LA MAGIA DEL LIVE-RELOAD ===
+      # Sincroniza tu código fuente local con el contenedor
+      - ./src:/usr/src/app/src
+      - ./pom.xml:/usr/src/app/pom.xml
+      # Necesario para el Hot Reload, ya que en target es donde maven guarda los .class compilados
+      # Y son los que usa Spring Boot DevTools para refrescar los cambios.
+      - ./target:/usr/src/app/target
+      # Cachear dependencias de Maven
+      - ~/.m2:/root/.m2
+    depends_on:
+      - db
+    restart: always
+
+# Volumen para la BDD
+volumes:
+  mysql-data:
