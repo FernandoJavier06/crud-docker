@@ -61,7 +61,8 @@ En tu archivo `pom.xml`, se ven así:
         <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
     </dependency>
-</dependencies>```
+</dependencies>
+```
 
 ---
 
