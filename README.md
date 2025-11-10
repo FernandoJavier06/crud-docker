@@ -78,8 +78,8 @@ En tu archivo `pom.xml`, se ven así:
 3.  Espera a que Docker descargue las imágenes, construya el contenedor de la app y que Spring Boot inicie. Verás un log que dice `Started CrudDockerApplication...`.
 
 4.  ¡Listo! El entorno está corriendo:
-    * **Frontend (HTML/JS):** [http://localhost:8080/](http://localhost:8080/)
-    * **API Backend:** `http://localhost:8080/api/estudiantes`
+    * **Frontend (HTML/JS):** [http://localhost:8080/](http://localhost:8081/)
+    * **API Backend:** `http://localhost:8081/api/estudiantes`
     * **Base de Datos (MySQL):** Accesible en `localhost:3309` (o el puerto que hayas mapeado).
 
 ---
@@ -113,7 +113,7 @@ La aplicación en Docker ya está corriendo en modo debug en el puerto `5005`. S
     * **Host:** `localhost`
     * **Port:** `5005`
 4.  Haz clic en **"Attach"**.
-5.  Refresca tu navegador (`http://localhost:8080/`). La ejecución se pausará en tu breakpoint dentro de NetBeans.
+5.  Refresca tu navegador (`http://localhost:8081/`). La ejecución se pausará en tu breakpoint dentro de NetBeans.
     
 
 ---
